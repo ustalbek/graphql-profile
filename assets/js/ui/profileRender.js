@@ -1,10 +1,6 @@
-/**
- * Profile page DOM rendering (presentation only).
- */
 import { renderXpLineChart, renderDonutChart } from '../lib/charts.js';
 import { transactionAmount } from '../services/profile.js';
 
-/** @param {string} iso */
 function formatDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
@@ -12,20 +8,6 @@ function formatDate(iso) {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
-/**
- * @typedef {Object} ProfileElements
- * @property {HTMLElement} basicInfo
- * @property {HTMLElement} xpTotal
- * @property {HTMLElement} gradeStats
- * @property {HTMLElement} recentProjects
- * @property {HTMLElement} chartLine
- * @property {HTMLElement} chartPie
- */
-
-/**
- * @param {ProfileElements} els
- * @param {Record<string, unknown>} data
- */
 export function renderBasicSection(els, data) {
   const me = data.me;
   els.basicInfo.innerHTML = '';
@@ -33,12 +15,12 @@ export function renderBasicSection(els, data) {
     ['Login', me?.login != null ? me.login : '—'],
     ['User id', me?.id != null ? String(me.id) : String(data.userId)],
     [
-      'Sample object (filtered query)',
+      'Object',
       data.objects?.[0]
         ? `${data.objects[0].name || '—'} (${data.objects[0].type || '—'})`
         : '—',
     ],
-    ['Progress rows (sample)', String(data.progressRows?.length ?? 0)],
+    ['Progress', String(data.progressRows?.length ?? 0)],
   ];
   rows.forEach(([dt, dd]) => {
     const dTerm = document.createElement('dt');
@@ -50,14 +32,11 @@ export function renderBasicSection(els, data) {
   });
 }
 
-/** @param {ProfileElements} els @param {Record<string, unknown>} data */
 export function renderXpSection(els, data) {
   const total = data.xpSum != null ? Math.round(data.xpSum) : 0;
   els.xpTotal.textContent = String(total);
-  els.xpTotal.setAttribute('aria-label', `Total experience points: ${total}`);
 }
 
-/** @param {ProfileElements} els @param {Record<string, unknown>} data */
 export function renderGradesSection(els, data) {
   const results = data.results || [];
   let pass = 0;
@@ -72,9 +51,9 @@ export function renderGradesSection(els, data) {
 
   els.gradeStats.innerHTML = '';
   [
-    { label: 'Passed (grade 1)', value: pass, cls: 'stat-pass' },
-    { label: 'Failed (grade 0)', value: fail, cls: 'stat-fail' },
-    { label: 'Other / pending', value: other, cls: 'stat-other' },
+    { label: 'Passed', value: pass, cls: 'stat-pass' },
+    { label: 'Failed', value: fail, cls: 'stat-fail' },
+    { label: 'Other', value: other, cls: 'stat-other' },
   ].forEach((s) => {
     const li = document.createElement('li');
     li.className = `stats-item ${s.cls}`;
@@ -91,7 +70,7 @@ export function renderGradesSection(els, data) {
   els.recentProjects.innerHTML = '';
   const head = document.createElement('h3');
   head.className = 'recent-title';
-  head.textContent = 'Recent graded projects';
+  head.textContent = 'Recent projects';
   els.recentProjects.appendChild(head);
 
   const list = document.createElement('ul');
@@ -100,7 +79,7 @@ export function renderGradesSection(els, data) {
   if (!slice.length) {
     const li = document.createElement('li');
     li.className = 'project-li muted';
-    li.textContent = 'No results returned for this user.';
+    li.textContent = 'No results.';
     list.appendChild(li);
   } else {
     slice.forEach((r) => {
@@ -123,7 +102,6 @@ export function renderGradesSection(els, data) {
   els.recentProjects.appendChild(list);
 }
 
-/** @param {ProfileElements} els @param {Record<string, unknown>} data */
 export function renderCharts(els, data) {
   const series = (data.txRows || []).map((r) => ({
     label: formatDate(r.createdAt),
@@ -145,7 +123,6 @@ export function renderCharts(els, data) {
   ]);
 }
 
-/** @param {ProfileElements} els @param {Record<string, unknown>} data */
 export function renderProfile(els, data) {
   renderBasicSection(els, data);
   renderXpSection(els, data);

@@ -1,18 +1,5 @@
-/**
- * GraphQL client and query documents.
- *
- * Query types (each used from services/profile.js):
- * 1. Normal — QUERY_USER_NORMAL
- * 2. With arguments — QUERY_OBJECT_BY_ID
- * 3. Nested — QUERY_RESULTS_NESTED
- */
 import { CONFIG } from '../config.js';
 
-/**
- * @param {string} jwt
- * @param {string} query
- * @param {Record<string, unknown>} [variables]
- */
 export async function graphqlRequest(jwt, query, variables) {
   const res = await fetch(CONFIG.GRAPHQL_URL, {
     method: 'POST',
@@ -96,7 +83,7 @@ export const QUERY_XP_AGGREGATE = `
   }
 `;
 
-export const QUERY_PROGRESS_SNIPPET = `
+export const QUERY_PROGRESS = `
   query ProgressForUser($userId: Int!) {
     progress(where: { userId: { _eq: $userId } }, limit: 5) {
       id

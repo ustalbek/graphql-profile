@@ -1,14 +1,5 @@
-/**
- * Authentication: Basic Auth sign-in, JWT storage, payload decode.
- */
 import { CONFIG } from '../config.js';
 
-/**
- * POST /signin with Authorization: Basic base64(identifier:password)
- * @param {string} identifier
- * @param {string} password
- * @returns {Promise<string>} JWT
- */
 export async function signIn(identifier, password) {
   const credentials = `${identifier}:${password}`;
   const header = btoa(unescape(encodeURIComponent(credentials)));
@@ -73,7 +64,6 @@ export function clearToken() {
   localStorage.removeItem(CONFIG.STORAGE_KEY);
 }
 
-/** @param {string} jwt */
 export function decodeJwtPayload(jwt) {
   if (!jwt || typeof jwt !== 'string') return null;
   const parts = jwt.split('.');
@@ -94,7 +84,6 @@ export function decodeJwtPayload(jwt) {
   }
 }
 
-/** @param {string} jwt @returns {number|string|null} */
 export function getUserIdFromJwt(jwt) {
   const payload = decodeJwtPayload(jwt);
   if (!payload) return null;

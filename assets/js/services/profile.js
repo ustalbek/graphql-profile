@@ -1,6 +1,3 @@
-/**
- * Profile data loading: orchestrates GraphQL queries for the authenticated user.
- */
 import { getUserIdFromJwt } from '../api/auth.js';
 import {
   graphqlRequest,
@@ -9,17 +6,15 @@ import {
   QUERY_RESULTS_NESTED,
   QUERY_XP_TRANSACTIONS,
   QUERY_XP_AGGREGATE,
-  QUERY_PROGRESS_SNIPPET,
+  QUERY_PROGRESS,
 } from '../api/graphql.js';
 
-/** @param {unknown} raw */
 function coerceUserId(raw) {
   if (raw === null || raw === undefined) return null;
   const n = parseInt(String(raw), 10);
   return Number.isFinite(n) ? n : null;
 }
 
-/** @param {Array<{ id: unknown }>} users @param {unknown} jwtId */
 function matchUserRow(users, jwtId) {
   if (!users?.length) return null;
   if (jwtId != null && jwtId !== '') {
@@ -36,14 +31,12 @@ function matchUserRow(users, jwtId) {
   return null;
 }
 
-/** @param {Record<string, unknown>} row */
 function transactionAmount(row) {
   if (row.amount != null) return Number(row.amount) || 0;
   if (row.value != null) return Number(row.value) || 0;
   return 0;
 }
 
-/** @param {string} jwt @param {number} userId */
 async function fetchXpTransactions(jwt, userId) {
   try {
     const tx = await graphqlRequest(jwt, QUERY_XP_TRANSACTIONS, { userId });
@@ -66,10 +59,6 @@ async function fetchXpTransactions(jwt, userId) {
   }
 }
 
-/**
- * @param {string} jwt
- * @returns {Promise<Record<string, unknown>>}
- */
 export async function loadProfileData(jwt) {
   const jwtId = getUserIdFromJwt(jwt);
 
@@ -77,16 +66,12 @@ export async function loadProfileData(jwt) {
   const users = userData.user || [];
   const me = matchUserRow(users, jwtId);
   if (!me?.id) {
-    throw new Error(
-      'Could not match your JWT to a user row. Check x-hasura-user-id / sub.'
-    );
+    throw new Error('Could not find your user.');
   }
 
   const userId = coerceUserId(me.id);
   if (userId == null) {
-    throw new Error(
-      'Your user id is not numeric; this demo expects Int user ids in GraphQL.'
-    );
+    throw new Error('Invalid user id.');
   }
 
   let results = [];
@@ -153,7 +138,7 @@ export async function loadProfileData(jwt) {
 
   let progressRows = [];
   try {
-    const pr = await graphqlRequest(jwt, QUERY_PROGRESS_SNIPPET, { userId });
+    const pr = await graphqlRequest(jwt, QUERY_PROGRESS, { userId });
     progressRows = pr.progress || [];
   } catch {
     try {

@@ -3,187 +3,114 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>01 School — Profile</title>
-    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <title>01 Profile</title>
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Skip to content</a>
     <div id="app">
-      <!-- Login -->
       <section id="login-view" class="view" aria-labelledby="login-heading">
         <div class="login-shell">
-        <div class="login-brand">
-          <div class="app-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-              />
-            </svg>
+          <div class="login-brand">
+            <div class="app-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+            </div>
+            <h1 id="login-heading" class="login-title">01 Profile</h1>
+            <p class="login-subtitle">Sign in with your username or email</p>
           </div>
-          <h1 id="login-heading" class="login-title">01 Profile</h1>
-          <p class="login-subtitle">Sign in with your username or email</p>
-        </div>
-        <div class="login-card card">
-          <form id="login-form" novalidate>
-            <label class="field" for="identifier">
-              <span class="field-label">Username or email</span>
-              <input
-                id="identifier"
-                name="identifier"
-                type="text"
-                autocomplete="username"
-                required
-                placeholder="you@school or login"
-              />
-            </label>
-            <label class="field" for="password">
-              <span class="field-label">Password</span>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autocomplete="current-password"
-                required
-                placeholder="••••••••"
-              />
-            </label>
-            <p id="login-error" class="error-msg" role="alert" aria-live="assertive" hidden></p>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              id="login-submit"
-              aria-describedby="login-error"
-            >
-              Sign In
-            </button>
-          </form>
-        </div>
+          <div class="login-card card">
+            <form id="login-form" novalidate>
+              <label class="field" for="identifier">
+                <span class="field-label">Username or email</span>
+                <input
+                  id="identifier"
+                  name="identifier"
+                  type="text"
+                  autocomplete="username"
+                  required
+                />
+              </label>
+              <label class="field" for="password">
+                <span class="field-label">Password</span>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                />
+              </label>
+              <p id="login-error" class="error-msg" role="alert" hidden></p>
+              <button type="submit" class="btn btn-primary" id="login-submit">
+                Log in
+              </button>
+            </form>
+          </div>
         </div>
       </section>
 
-      <!-- Profile -->
-      <section
-        id="profile-view"
-        class="view hidden"
-        aria-labelledby="profile-heading"
-        aria-hidden="true"
-      >
+      <section id="profile-view" class="view hidden" aria-labelledby="profile-heading" aria-hidden="true">
         <header class="profile-header">
           <div class="profile-header-inner">
             <h1 id="profile-heading" class="profile-title">Profile</h1>
-            <button type="button" class="btn btn-ghost" id="logout-btn">
-              Sign Out
-            </button>
+            <button type="button" class="btn btn-ghost" id="logout-btn">Log out</button>
           </div>
         </header>
 
-        <main id="main-content" class="profile-main" tabindex="-1">
-          <p
-            id="profile-global-error"
-            class="error-msg banner-error"
-            role="alert"
-            aria-live="assertive"
-            hidden
-          ></p>
-          <div
-            id="profile-loading"
-            class="loading-state"
-            role="status"
-            aria-live="polite"
-            aria-busy="true"
-            hidden
-          >
+        <main class="profile-main">
+          <p id="profile-global-error" class="error-msg banner-error" role="alert" hidden></p>
+          <div id="profile-loading" class="loading-state" hidden>
             <span class="spinner" aria-hidden="true"></span>
-            <span>Loading your data…</span>
+            <span>Loading…</span>
           </div>
 
           <div id="profile-content" class="profile-grid" hidden>
-            <!-- 1: Basic user -->
             <article class="card section-card" aria-labelledby="sec-basic">
               <h2 id="sec-basic" class="section-title">Basic information</h2>
               <dl class="info-list" id="basic-info"></dl>
             </article>
 
-            <!-- 2: XP -->
             <article class="card section-card" aria-labelledby="sec-xp">
               <h2 id="sec-xp" class="section-title">Experience points</h2>
-              <p
-                class="stat-big"
-                id="xp-total"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                —
-              </p>
-              <p class="section-hint" id="xp-hint">Total XP from transactions of type <code>xp</code></p>
+              <p class="stat-big" id="xp-total">—</p>
+              <p class="section-hint">Sum of <code>xp</code> transactions</p>
             </article>
 
-            <!-- 3: Progress / results -->
             <article class="card section-card" aria-labelledby="sec-progress">
               <h2 id="sec-progress" class="section-title">Projects &amp; grades</h2>
-              <ul class="stats-row" id="grade-stats" aria-label="Grade summary"></ul>
+              <ul class="stats-row" id="grade-stats"></ul>
               <div id="recent-projects" class="recent-list"></div>
             </article>
 
-            <!-- 4: Charts (SVG only) -->
             <article class="card section-card section-charts" aria-labelledby="sec-charts">
               <h2 id="sec-charts" class="section-title">Statistics</h2>
-              <p class="section-hint">Charts are drawn from live GraphQL data (SVG).</p>
               <div class="charts-grid">
                 <div class="chart-panel">
                   <h3 class="chart-title">XP over time</h3>
-                  <div
-                    id="chart-xp-line"
-                    class="chart-host"
-                    role="img"
-                    aria-label="XP over time chart"
-                  ></div>
+                  <div id="chart-xp-line" class="chart-host"></div>
                 </div>
                 <div class="chart-panel">
                   <h3 class="chart-title">Pass vs fail</h3>
-                  <div
-                    id="chart-pass-pie"
-                    class="chart-host"
-                    role="img"
-                    aria-label="Pass versus fail chart"
-                  ></div>
+                  <div id="chart-pass-pie" class="chart-host"></div>
                 </div>
               </div>
             </article>
 
-            <!-- Bonus: mini query explorer -->
             <article class="card section-card section-explorer" aria-labelledby="sec-explorer">
-              <h2 id="sec-explorer" class="section-title">Query explorer</h2>
-              <p class="section-hint" id="explorer-intro">
-                Run a read-only GraphQL query with your session (like a tiny GraphiQL).
-              </p>
+              <h2 id="sec-explorer" class="section-title">GraphQL explorer</h2>
               <label class="field" for="explorer-query">
                 <span class="field-label">Query</span>
-                <textarea
-                  id="explorer-query"
-                  name="explorer-query"
-                  rows="8"
-                  spellcheck="false"
-                  aria-describedby="explorer-intro explorer-hint"
-                >{ user { id login } }</textarea>
+                <textarea id="explorer-query" rows="8" spellcheck="false">{ user { id login } }</textarea>
               </label>
-              <p id="explorer-hint" class="section-hint">
-                Press Run query to execute against the GraphQL API.
-              </p>
-              <button type="button" class="btn btn-secondary" id="explorer-run">
-                Run query
-              </button>
+              <button type="button" class="btn btn-secondary" id="explorer-run">Run</button>
               <div class="field">
-                <span class="field-label" id="explorer-response-label">Response</span>
-                <pre
-                  id="explorer-response"
-                  class="explorer-response"
-                  role="region"
-                  aria-labelledby="explorer-response-label"
-                  tabindex="0"
-                ></pre>
+                <span class="field-label">Response</span>
+                <pre id="explorer-response" class="explorer-response"></pre>
               </div>
             </article>
           </div>

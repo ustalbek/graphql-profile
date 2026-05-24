@@ -1,6 +1,3 @@
-/**
- * Application entry: routing, auth events, profile bootstrap.
- */
 import {
   signIn,
   getToken,
@@ -48,7 +45,6 @@ function showProfile() {
   profileView.removeAttribute('aria-hidden');
 }
 
-/** @param {string} [msg] */
 function setLoginError(msg) {
   if (!msg) {
     loginError.hidden = true;
@@ -69,23 +65,17 @@ async function openProfile() {
   profileGlobalError.hidden = true;
   profileContent.hidden = true;
   profileLoading.hidden = false;
-  profileLoading.setAttribute('aria-busy', 'true');
 
   try {
     const data = await loadProfileData(jwt);
     renderProfile(profileEls, data);
     profileLoading.hidden = true;
-    profileLoading.setAttribute('aria-busy', 'false');
     profileContent.hidden = false;
-    document.getElementById('main-content')?.focus({ preventScroll: true });
   } catch (e) {
     profileLoading.hidden = true;
-    profileLoading.setAttribute('aria-busy', 'false');
     profileGlobalError.hidden = false;
     profileGlobalError.textContent =
-      e instanceof Error
-        ? e.message
-        : 'Failed to load profile. Try logging in again.';
+      e instanceof Error ? e.message : 'Failed to load profile.';
   }
 }
 
@@ -101,7 +91,6 @@ loginForm.addEventListener('submit', async (ev) => {
     return;
   }
   loginSubmit.disabled = true;
-  loginSubmit.setAttribute('aria-busy', 'true');
   try {
     const token = await signIn(identifier, password);
     setToken(token);
@@ -112,7 +101,6 @@ loginForm.addEventListener('submit', async (ev) => {
     setLoginError('Invalid username/email or password.');
   } finally {
     loginSubmit.disabled = false;
-    loginSubmit.removeAttribute('aria-busy');
   }
 });
 

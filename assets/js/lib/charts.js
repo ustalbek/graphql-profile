@@ -1,6 +1,3 @@
-/**
- * Pure SVG charts — no canvas.
- */
 const NS = 'http://www.w3.org/2000/svg';
 
 function el(name, attrs, children) {
@@ -18,13 +15,8 @@ function el(name, attrs, children) {
   return node;
 }
 
-/**
- * @param {HTMLElement} container
- * @param {{ label: string, value: number }[]} series
- */
 export function renderXpLineChart(container, series) {
   container.innerHTML = '';
-  container.setAttribute('role', 'img');
   const W = 420;
   const H = 220;
   const padL = 48;
@@ -46,11 +38,7 @@ export function renderXpLineChart(container, series) {
         }),
       ])
     );
-    container.querySelector('text').textContent = 'No XP transactions to plot';
-    container.setAttribute(
-      'aria-label',
-      'XP over time: no transactions to display'
-    );
+    container.querySelector('text').textContent = 'No data';
     return;
   }
 
@@ -119,7 +107,7 @@ export function renderXpLineChart(container, series) {
       }),
     ]
   );
-  svg.querySelectorAll('text')[0].textContent = `max ${maxY} XP`;
+  svg.querySelectorAll('text')[0].textContent = `max ${maxY}`;
 
   const last = points[n - 1];
   const endLabel = el('text', {
@@ -132,19 +120,10 @@ export function renderXpLineChart(container, series) {
   endLabel.textContent = String(last.y);
   svg.appendChild(endLabel);
   container.appendChild(svg);
-  container.setAttribute(
-    'aria-label',
-    `XP over time: cumulative total ${last.y} across ${n} transactions`
-  );
 }
 
-/**
- * @param {HTMLElement} container
- * @param {{ label: string, value: number, color: string }[]} segments
- */
 export function renderDonutChart(container, segments) {
   container.innerHTML = '';
-  container.setAttribute('role', 'img');
   const W = 280;
   const H = 240;
   const cx = W / 2;
@@ -165,11 +144,7 @@ export function renderDonutChart(container, segments) {
         }),
       ])
     );
-    container.querySelector('text').textContent = 'No graded projects yet';
-    container.setAttribute(
-      'aria-label',
-      'Pass versus fail: no graded projects yet'
-    );
+    container.querySelector('text').textContent = 'No data';
     return;
   }
 
@@ -243,11 +218,4 @@ export function renderDonutChart(container, segments) {
   });
 
   container.appendChild(svg);
-  const summary = segments
-    .map((s) => `${s.label} ${s.value}`)
-    .join(', ');
-  container.setAttribute(
-    'aria-label',
-    `Pass versus fail: ${total} projects total, ${summary}`
-  );
 }
